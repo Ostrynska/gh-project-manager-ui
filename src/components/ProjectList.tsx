@@ -34,6 +34,7 @@ export default function ProjectList() {
 
   useEffect(() => {
     fetchProjects(); // Отримуємо проекти після завантаження компонента
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Видалення проекту
