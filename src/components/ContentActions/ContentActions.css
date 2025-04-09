@@ -1,0 +1,84 @@
+.app-content-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 4px;
+}
+
+.app-content-actions-wrapper {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.search-bar {
+  background-color: #1d283c;
+  border: 1px solid #1d283c;
+  color: #ffffff;
+  font-size: 14px;
+  line-height: 24px;
+  border-radius: 4px;
+  padding: 0 10px 0 32px;
+  height: 32px;
+  background-size: 16px;
+  background-repeat: no-repeat;
+  background-position: left 10px center;
+  width: 100%;
+  max-width: 320px;
+  transition: 0.2s;
+}
+
+.search-bar:hover {
+  border-color: #6291fd;
+}
+
+.search-bar:focus {
+  outline: none;
+  border-color: #2869ff;
+}
+
+.search-bar::placeholder {
+  color: #ffffff;
+}
+
+.action-button {
+  border-radius: 4px;
+  height: 32px;
+  background-color: #1d283c;
+  border: 1px solid #1d283c;
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+  font-size: 14px;
+  margin-left: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.action-button:hover {
+  border-color: #6291fd;
+}
+
+.action-button:focus,
+.action-button.active {
+  outline: none;
+  color: #2869ff;
+  border-color: #2869ff;
+}
+
+/* адаптивність */
+@media screen and (max-width: 520px) {
+  .app-content-actions {
+    flex-direction: column;
+  }
+
+  .search-bar {
+    max-width: 100%;
+    order: 2;
+  }
+
+  .app-content-actions-wrapper {
+    padding-bottom: 16px;
+    order: 1;
+  }
+}

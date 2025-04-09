@@ -78,7 +78,7 @@
   font-weight: 700;
   line-height: 1.5;
   margin: 0;
-  max-width: 120px;
+  max-width: 150px;
   min-height: 44px;
   min-width: 10px;
   outline: none;
@@ -100,7 +100,7 @@
 
 .user-container {
   display: flex;
-  justify-content: end;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
   gap: 80px

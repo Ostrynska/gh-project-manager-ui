@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import './ProjectList.css';
 
 type Project = {
   id: number;
@@ -13,7 +12,7 @@ type Project = {
   created_at: number;
 };
 
-export default function ProjectList() {
+export default function ProjectList({ refreshTrigger }: { refreshTrigger: boolean }) {
   const [projects, setProjects] = useState<Project[]>([]);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editableProject, setEditableProject] = useState<Project | null>(null);
@@ -21,10 +20,14 @@ export default function ProjectList() {
   // Отримуємо ID користувача з локального сховища
   const userId = localStorage.getItem('userId');
 
+  useEffect(() => {
+    fetchProjects();
+  }, [refreshTrigger]); // 
+
   // Функція для отримання проєктів
   const fetchProjects = async () => {
     try {
-      const res = await axios.get('http://localhost:4000/api/projects');
+      const res = await axios.get('http://localhost:8080/api/projects');
       // Фільтруємо проекти за власником
       const filteredProjects = res.data.filter((project: Project) => project.owner === userId);
       setProjects(filteredProjects); // Зберігаємо відфільтровані проекти
@@ -47,7 +50,7 @@ export default function ProjectList() {
   // Оновлення даних з GitHub
   const handleGitHubRefresh = async (id: number) => {
     try {
-      await axios.put(`http://localhost:4000/api/projects/${id}`);
+      await axios.put(`http://localhost:8080/api/projects/${id}`);
       const res = await axios.get<Project[]>('http://localhost:4000/api/projects');
       const updated = res.data.find((p) => p.id === id);
       if (updated) {
@@ -63,7 +66,7 @@ export default function ProjectList() {
   const handleSave = async () => {
     if (!editableProject) return;
     try {
-      await axios.patch(`http://localhost:4000/api/projects/${editableProject.id}`, {
+      await axios.patch(`http://localhost:8080/api/projects/${editableProject.id}`, {
         name: editableProject.name,
       });
       setEditingId(null);
@@ -75,21 +78,19 @@ export default function ProjectList() {
   };
 
   return (
-    <div className="products-area-wrapper tableView">
-      <div>
-        <div className="products-header">
-          <div className="product-cell image">Owner          <button className="sort-button">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512"><path fill="currentColor" d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"/></svg>
-          </button></div>
-          <div className="product-cell image">Name</div>
-          <div className="product-cell image">URL</div>
-          <div className="product-cell image">Stars</div>
-          <div className="product-cell image">Forks</div>
-          <div className="product-cell image">Issues</div>
-          <div className="product-cell image">Created</div>
-          <div className="product-cell image">Actions</div>
-        </div>
-      </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Owner</th>
+          <th>Name</th>
+          <th>URL</th>
+          <th>Stars</th>
+          <th>Forks</th>
+          <th>Issues</th>
+          <th>Created</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
       <tbody>
         {projects.map((p) => (
           <tr key={p.id}>
@@ -128,6 +129,6 @@ export default function ProjectList() {
           </tr>
         ))}
       </tbody>
-    </div>
+    </table>
   );
 }

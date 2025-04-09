@@ -1,9 +1,17 @@
 import { BsSearch } from "react-icons/bs";
 import { GrHomeRounded } from "react-icons/gr";
+import { RiUser2Fill } from "react-icons/ri";
+import { TbLogout } from "react-icons/tb";
 
 import './Header.css';
 
-export default function Header() {
+
+interface HeaderProps {
+  user: string;
+  onClick: () => Promise<void>;
+}
+
+export default function Header({ user, onClick }: HeaderProps) {
   return (
     <header>
           <nav id="navbar">
@@ -28,9 +36,28 @@ export default function Header() {
                   </div>
                   <span className="link-text">Home</span>
                 </a>
-              </li>
-            </ul>
-          </nav>
+          </li>
+
+        </ul>
+        <div className="navbar-end">
+        <div className="navbar-item flexbox-left">
+                <a className="navbar-item-inner flexbox-left">
+                  <div className="navbar-item-inner-icon-wrapper flexbox">
+                     <RiUser2Fill />
+                  </div>
+                  <span className="link-text">{user}</span>
+          </a>
+        </div>
+        <div className="navbar-item flexbox-left" onClick={onClick}>
+                <a className="navbar-item-inner flexbox-left">
+                  <div className="navbar-item-inner-icon-wrapper flexbox">
+                     <TbLogout />
+                  </div>
+                  <span className="link-text">Sign out</span>
+          </a>
+        </div>
+</div>
+      </nav>
         </header>
   );
 }
