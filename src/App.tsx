@@ -211,9 +211,9 @@ const handleUpdate = async (repo: RepoData) => {
                     currentSort={{ key: sortKey, order: sortOrder }}
                   />
                 ) : (
-                  <p className="empty-state">
+                    <p className="empty-state">
                     You have no projects yet. Start by adding a GitHub repository above.
-                  </p>
+                    </p>
                 )}
           </div>
         </section>
