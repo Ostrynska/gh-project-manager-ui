@@ -67,6 +67,7 @@
     transition: width .35s cubic-bezier(var(--transition-main), 1);
     overflow-y: auto;
     overflow-x: hidden;
+    z-index: 100;
 }
 #navbar:hover {
     width: 16em;
