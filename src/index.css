@@ -1,8 +1,5 @@
-*,
-*::before,
-*::after {
-  -webkit-box-sizing: inherit;
-  box-sizing: inherit;
+*, ::after, ::before {
+    box-sizing: border-box;
 }
 
 :root {
@@ -23,18 +20,6 @@
     --heading-small: 2.4rem;
     --paragraph: 1.11rem;
     --navbar-buttons: 2.4rem;
-    /* misc */
-    --transition-main: .175, .685, .32;
-    /* Fonts */
-    --font-main: "Poppins";
-}
-
-#root {
-  height: 100vh;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
 html {
@@ -48,35 +33,18 @@ body {
   background-image: url('./assets/pattern-randomized.svg');
   height: 100vh;
   color: #000;
-  font-family: 'Poppins', sans-serif;
-}
-
-main {
-  max-width: 1420px;
-  margin: 0 auto;
-  padding-top: 20px;
-  width: 100%;
-  display: flex;
-  justify-content: center;;
-}
-
-h1 {
-  --stretch-multiplier: 5;
-  font-size: 58px;
-  font-family: 'Poppins', sans-serif;
-  text-transform: uppercase;
-  display: grid;
-  line-height: 1.4;
+  font-family: "Inter", sans-serif;
 }
 
 section {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  gap: 20px;
+  padding-top: 60px;
+  padding-bottom: 60px;
 }
 
-p {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  margin: 0;
+.container {
+  margin: 0 auto;
+  max-width: 1200px;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
 }

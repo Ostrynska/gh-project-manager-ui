@@ -24,14 +24,6 @@ export default function Header({ user, onClick }: HeaderProps) {
               <li className="navbar-item flexbox-left">
                 <a className="navbar-item-inner flexbox-left">
                   <div className="navbar-item-inner-icon-wrapper flexbox">
-                    <BsSearch />
-                  </div>
-                  <span className="link-text">Search</span>
-                </a>
-              </li>
-              <li className="navbar-item flexbox-left">
-                <a className="navbar-item-inner flexbox-left">
-                  <div className="navbar-item-inner-icon-wrapper flexbox">
                      <GrHomeRounded />
                   </div>
                   <span className="link-text">Home</span>

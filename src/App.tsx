@@ -3,22 +3,9 @@ import { useAuth } from "react-oidc-context";
 import Loader from "./components/Loader";
 import Header from "./components/Header/Header";
 import "./App.css";
-
-interface RepoData {
-  owner: string;
-  name: string;
-  url: string;
-  stars: number;
-  forks: number;
-  issues: number;
-  createdAt: number;
-}
-const cellStyle = {
-  border: '1px solid #ccc',
-  padding: '8px',
-  textAlign: 'left' as const,
-  verticalAlign: 'top' as const,
-};
+import { SearchBar } from './components/Search/SearchBar';
+import ProjectsTable from './components/Projects/ProjectsTable';
+import WelcomePage from './pages/Welcome/Welcome';
 
 function App() {
   const auth = useAuth();
@@ -86,74 +73,50 @@ const fetchRepo = async (path: string) => {
   }
 };
 
+  const signOutRedirect = () =>
+  {
+    auth.removeUser();
+    const clientId = "43hqtpga5g4fgvf7rci04ht07i";
+    const logoutUri = "http://localhost:5173/";
+    const cognitoDomain = "https://eu-north-1pefrhk5ca.auth.eu-north-1.amazoncognito.com";
+    window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(logoutUri)}`;
+  };
+
+    const handleUpdate = () =>
+  {
+    };
+  
+      const handleDelete = () =>
+  {
+  };
+
 
   if (auth.isLoading) return <Loader />;
   if (auth.error) return <div>Помилка: {auth.error.message}</div>;
 
   if (!auth.isAuthenticated) {
     return (
-      <main>
-        <h1>Welcome to GitHub projects CRM!</h1>
-        <p>Sign in to manage your GitHub projects</p>
-        <button className="button-84" onClick={() => auth.signinRedirect()}>Sign in</button>
-      </main>
+      <WelcomePage onSignIn={() => auth.signinRedirect()} />
     );
   }
 
 
   return (
     <>
-      <Header user={auth.user?.profile.email || ""} onClick={() => auth.removeUser()} />
+      <Header user={auth.user?.profile.email || ""} onClick={async () => signOutRedirect()} />
       <main className="flexbox-col">
-        <section style={{ maxWidth: 500, margin: 'auto' }}>
-          <h2>Projects</h2>
-          <input
-            type="text"
-            placeholder="facebook/react"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            style={{ padding: 8, width: '100%', marginBottom: 8 }}
-          />
-          <button onClick={() => fetchRepo(input)} style={{ padding: 8, marginBottom: 16 }}>
-            Додати
-          </button>
+        <section>
+          <div className="container">
+            <SearchBar input={input} setInput={setInput}
+        onAdd={() => fetchRepo(input)}/></div>
+        </section>
+        <section>
+          <div className="container">
+            <h1>Projects</h1>
+            <ProjectsTable projectsData={projectsData} handleUpdate={handleUpdate} handleDelete={handleDelete} />
+          </div>
         </section>
 
-        <section>
-<table style={{ width: '100%', maxWidth: 800, margin: 'auto', borderCollapse: 'collapse' }}>
-  <thead>
-    <tr>
-      <th style={cellStyle}>Власник</th>
-      <th style={cellStyle}>Назва</th>
-      <th style={cellStyle}>URL</th>
-      <th style={cellStyle}>Зірки</th>
-      <th style={cellStyle}>Форки</th>
-      <th style={cellStyle}>Issues</th>
-      <th style={cellStyle}>Створено</th>
-      <th style={cellStyle}>Дії</th>
-    </tr>
-  </thead>
-  <tbody>
-    {Object.values(projectsData).map((repo, index) => (
-      <tr key={index}>
-        <td style={cellStyle}>{repo.owner}</td>
-        <td style={cellStyle}>{repo.name}</td>
-        <td style={cellStyle}>
-          <a href={repo.url} target="_blank" rel="noopener noreferrer">{repo.url}</a>
-        </td>
-        <td style={cellStyle}>{repo.stars}</td>
-        <td style={cellStyle}>{repo.forks}</td>
-        <td style={cellStyle}>{repo.issues}</td>
-        <td style={cellStyle}>{repo.createdAt}</td>
-        <td style={cellStyle}>
-          {/* <button onClick={() => handleUpdate(repo)}>Оновити</button>{' '}
-          <button onClick={() => handleDelete(repo)}>Видалити</button> */}
-        </td>
-      </tr>
-    ))}
-  </tbody>
-</table>
-        </section>
       </main>
     </>
   );
