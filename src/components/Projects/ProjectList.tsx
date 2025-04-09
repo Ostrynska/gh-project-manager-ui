@@ -74,19 +74,19 @@ export default function ProjectList() {
   };
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>Owner</th>
-          <th>Name</th>
-          <th>URL</th>
-          <th>Stars</th>
-          <th>Forks</th>
-          <th>Issues</th>
-          <th>Created</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
+    <div className="products-area-wrapper tableView">
+      <div>
+        <div className="products-header">
+          <div className="product-cell image">Owner</div>
+          <div className="product-cell image">Name</div>
+          <div className="product-cell image">URL</div>
+          <div className="product-cell image">Stars</div>
+          <div className="product-cell image">Forks</div>
+          <div className="product-cell image">Issues</div>
+          <div className="product-cell image">Created</div>
+          <div className="product-cell image">Actions</div>
+        </div>
+      </div>
       <tbody>
         {projects.map((p) => (
           <tr key={p.id}>
@@ -125,6 +125,6 @@ export default function ProjectList() {
           </tr>
         ))}
       </tbody>
-    </table>
+    </div>
   );
 }

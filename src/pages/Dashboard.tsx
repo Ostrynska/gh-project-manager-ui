@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import ProjectList from '../components/ProjectList';
+import ProjectList from '../components/Projects/ProjectList';
 
 interface DashboardProps {
   onSignOut: () => void;
