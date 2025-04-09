@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from "react-oidc-context";
+import { ToastContainer, Bounce, toast } from 'react-toastify';
 import Loader from "./components/Loader";
 import Header from "./components/Header/Header";
 import "./App.css";
@@ -66,6 +67,16 @@ const fetchRepo = async (path: string) => {
   try {
     const [owner, name] = path.split('/');
     const response = await fetch(`https://api.github.com/repos/${owner}/${name}`);
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        toast.error("Repository not found or it may be private.");
+      } else {
+        toast.error("Something went wrong while fetching the repository.");
+      }
+      return;
+    }
+
     const data = await response.json();
 
     const newRepo: RepoData = {
@@ -83,20 +94,20 @@ const fetchRepo = async (path: string) => {
       [`${owner}/${name}`]: newRepo,
     };
 
-    setProjectsData(updatedData); // оновлюємо стейт
+    setProjectsData(updatedData);
     setInput('');
 
-    // ВАЖЛИВО: надсилай саме те, що щойно зібрала
     await fetch('http://localhost:3001/api/save-projects', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         email: ID_EMAIL,
-        projects: Object.values(updatedData), // не projectsData!
+        projects: Object.values(updatedData),
       }),
     });
   } catch (err) {
-    console.error('Помилка при додаванні репозиторію:', err);
+    console.error('❌ Помилка при додаванні репозиторію:', err);
+    toast.error("Unexpected error occurred.");
   }
 };
 
@@ -166,7 +177,6 @@ const handleUpdate = async (repo: RepoData) => {
     }
   };
 
-
   if (auth.isLoading) return <Loader />;
   if (auth.error) return <div>Помилка: {auth.error.message}</div>;
 
@@ -176,30 +186,51 @@ const handleUpdate = async (repo: RepoData) => {
     );
   }
 
-
   return (
     <>
       <Header user={auth.user?.profile.email || ""} onClick={async () => signOutRedirect()} />
       <main className="flexbox-col">
-        <section>
-          <div className="container">
+        <div className="container">
             <SearchBar input={input} setInput={setInput} onAdd={() => fetchRepo(input)}/></div>
-        </section>
         <section>
           <div className="container">
             <h1>Projects</h1>
-            <ProjectsTable projectsData={sortedProjects} handleUpdate={handleUpdate} handleDelete={handleDelete} onSort={(key) => {
-    if (sortKey === key) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortKey(key);
-      setSortOrder("asc");
-    }
-  }}
-  currentSort={{ key: sortKey, order: sortOrder }}/>
+            {sortedProjects.length > 0 ? (
+                  <ProjectsTable
+                    projectsData={sortedProjects}
+                    handleUpdate={handleUpdate}
+                    handleDelete={handleDelete}
+                    onSort={(key) => {
+                      if (sortKey === key) {
+                        setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+                      } else {
+                        setSortKey(key);
+                        setSortOrder("asc");
+                      }
+                    }}
+                    currentSort={{ key: sortKey, order: sortOrder }}
+                  />
+                ) : (
+                  <p className="empty-state">
+                    You have no projects yet. Start by adding a GitHub repository above.
+                  </p>
+                )}
           </div>
         </section>
       </main>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={3000}
+        hideProgressBar
+        newestOnTop={true}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        transition={Bounce}
+/>
     </>
   );
 }

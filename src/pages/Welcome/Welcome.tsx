@@ -29,7 +29,7 @@ export default function WelcomePage({ onSignIn }: WelcomePageProps) {
                 <div className="welcome-image-block">
                 <img
                     className="welcome-image"
-                    src="/src/assets/bbeb127a-2b8f-4c3d-b626-4bc06ed2b260-Photoroom.png"
+                    src="/src/assets/welcome.png"
                     alt="GitHub Projects CRM"
                     width={360}
                 />

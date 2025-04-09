@@ -1,4 +1,5 @@
 import { MdChevronRight } from "react-icons/md";
+import { toast } from 'react-toastify';
 import "./SearchBar.css";
 
 interface SearchBarProps {
@@ -7,7 +8,15 @@ interface SearchBarProps {
   onAdd: () => void;
 }
 
-export const SearchBar: React.FC<SearchBarProps> = ({ input, setInput, onAdd }) => {
+export const SearchBar: React.FC<SearchBarProps> = ({ input, setInput, onAdd }) =>{
+  const handleClick = () => {
+    if (!input.includes('/') || input.split('/').length !== 2) {
+      toast("Enter in format: owner/repo");
+      return;
+    }
+    onAdd();
+  };
+
   return (
     <div className="header-bar">
       <div className="breadcrumb">
@@ -40,7 +49,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ input, setInput, onAdd }) 
             onChange={(e) => setInput(e.target.value)}
           />
         </div>
-        <button className="button-31" onClick={onAdd}>
+        <button className="button-31" onClick={handleClick}>
           Add Project
         </button>
       </div>
