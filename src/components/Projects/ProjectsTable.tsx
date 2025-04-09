@@ -1,6 +1,8 @@
 import React from "react";
 import { RxUpdate } from "react-icons/rx";
 import { MdOutlineDeleteOutline } from "react-icons/md";
+import { FcAlphabeticalSortingAz, FcAlphabeticalSortingZa } from "react-icons/fc";
+import { FcNumericalSorting12, FcNumericalSorting21 } from "react-icons/fc";
 import './ProjectsTable.css'
 
 interface Repo {
@@ -14,29 +16,49 @@ interface Repo {
 }
 
 interface ProjectsTableProps {
-  projectsData: Record<string, Repo>;
-  handleUpdate: (repo: Repo) => void;
-  handleDelete: (repo: Repo) => void;
+    projectsData: Repo[];
+    handleUpdate: (repo: Repo) => void;
+    handleDelete: (repo: Repo) => void;
+    onSort: (key: keyof Repo) => void;
+    currentSort: { key: keyof Repo | null; order: "asc" | "desc" };
 }
 
-export const ProjectsTable: React.FC<ProjectsTableProps> = ({ projectsData, handleUpdate, handleDelete }) =>
+export const ProjectsTable: React.FC<ProjectsTableProps> = ({ projectsData, handleUpdate, handleDelete, onSort, currentSort}) =>
 {
   return (
     <table className="projects-table">
       <thead>
         <tr className="projects-table-header">
-          <th>Owner</th>
-          <th>Project</th>
+          <th onClick={() => onSort("owner")}>
+             <span> Owner {currentSort.key === "owner" && (currentSort.order === "asc" ? <FcAlphabeticalSortingAz /> : <FcAlphabeticalSortingZa />)}
+             </span>
+          </th>
+          <th onClick={() => onSort("name")}>
+             <span> Project {currentSort.key === "name" && (currentSort.order === "asc" ? <FcAlphabeticalSortingAz /> : <FcAlphabeticalSortingZa />)}
+             </span>
+          </th>
           <th>URL</th>
-          <th>Stars</th>
-          <th>Forks</th>
-          <th>Issues</th>
-          <th>Release date</th>
+          <th onClick={() => onSort("stars")}>
+            <span> Stars {currentSort.key === "stars" && (currentSort.order === "asc" ? <FcNumericalSorting12  /> : <FcNumericalSorting21 />)}
+            </span>
+          </th>
+          <th onClick={() => onSort("forks")}>
+            <span> Forks {currentSort.key === "forks" && (currentSort.order === "asc" ? <FcNumericalSorting12  /> : <FcNumericalSorting21 />)}
+            </span>
+          </th>
+          <th onClick={() => onSort("issues")}>
+            <span> Issues {currentSort.key === "issues" && (currentSort.order === "asc" ? <FcNumericalSorting12  /> : <FcNumericalSorting21 />)}
+            </span>
+          </th>
+          <th onClick={() => onSort("createdAt")}>
+            <span> Release date {currentSort.key === "createdAt" && (currentSort.order === "asc" ? <FcNumericalSorting12  /> : <FcNumericalSorting21 />)}
+            </span>
+          </th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
-        {Object.values(projectsData).map((repo, index) => (
+        {projectsData.map((repo, index) => (
             <tr className="projects-table-row" key={index}>
             <td>{repo.owner}</td>
             <td>{repo.name}</td>

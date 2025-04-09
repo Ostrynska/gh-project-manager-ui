@@ -34,6 +34,12 @@ th, td {
     font-size: 14px;
 }
 
+.projects-table-header > th > span {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+}
+
 .projects-table-row > td {
     border-bottom: 1px solid #e4e7ec;
     padding: 6px 0 6px 20px;

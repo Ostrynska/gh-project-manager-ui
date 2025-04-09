@@ -23,11 +23,29 @@ function App() {
 
   const [input, setInput] = useState('');
   const [projectsData, setProjectsData] = useState<{ [key: string]: RepoData }>({});
-useEffect(() => {
-  if (auth.isAuthenticated && ID_EMAIL) {
-    fetchUserProjects(ID_EMAIL);
-  }
-}, [auth.isAuthenticated, ID_EMAIL]);
+  const [sortKey, setSortKey] = useState<keyof RepoData | null>(null);
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+
+  const sortedProjects = Object.values(projectsData).sort((a, b) => {
+    if (!sortKey) return 0;
+
+    const valA = a[sortKey];
+    const valB = b[sortKey];
+
+    if (typeof valA === "number" && typeof valB === "number") {
+      return sortOrder === "asc" ? valA - valB : valB - valA;
+    }
+
+    return sortOrder === "asc"
+      ? String(valA).localeCompare(String(valB))
+      : String(valB).localeCompare(String(valA));
+  });
+
+  useEffect(() => {
+    if (auth.isAuthenticated && ID_EMAIL) {
+      fetchUserProjects(ID_EMAIL);
+    }
+  }, [auth.isAuthenticated, ID_EMAIL]);
 
 
 const fetchUserProjects = async (email: string) => {
@@ -43,7 +61,6 @@ const fetchUserProjects = async (email: string) => {
     console.error("❌ Помилка завантаження проєктів:", err);
   }
 };
-
 
 const fetchRepo = async (path: string) => {
   try {
@@ -171,7 +188,15 @@ const handleUpdate = async (repo: RepoData) => {
         <section>
           <div className="container">
             <h1>Projects</h1>
-            <ProjectsTable projectsData={projectsData} handleUpdate={handleUpdate} handleDelete={handleDelete} />
+            <ProjectsTable projectsData={sortedProjects} handleUpdate={handleUpdate} handleDelete={handleDelete} onSort={(key) => {
+    if (sortKey === key) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortKey(key);
+      setSortOrder("asc");
+    }
+  }}
+  currentSort={{ key: sortKey, order: sortOrder }}/>
           </div>
         </section>
       </main>
