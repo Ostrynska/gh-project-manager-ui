@@ -79,3 +79,9 @@ th, td {
   background-color: #1e293b;
   color: #fff;
 }
+
+.sortable-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
