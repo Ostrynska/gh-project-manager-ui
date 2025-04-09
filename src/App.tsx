@@ -11,7 +11,7 @@ type RepoData = {
   stars: number;
   forks: number;
   issues: number;
-  createdAt: number;
+  createdAt: string;
 };
 import { SearchBar } from './components/Search/SearchBar';
 import ProjectsTable from './components/Projects/ProjectsTable';
@@ -58,7 +58,7 @@ const fetchRepo = async (path: string) => {
       stars: data.stargazers_count,
       forks: data.forks_count,
       issues: data.open_issues_count,
-      createdAt: Date.parse(data.created_at),
+      createdAt: data.created_at,
     };
 
     const updatedData = {
@@ -95,9 +95,27 @@ const fetchRepo = async (path: string) => {
     const handleUpdate = () =>
   {
     };
-  
-      const handleDelete = () =>
-  {
+
+  const handleDelete = async (repo: RepoData) => {
+    try {
+      const res = await fetch('http://localhost:3001/api/delete-project', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: ID_EMAIL,
+          owner: repo.owner,
+          name: repo.name,
+        }),
+      });
+
+      if (!res.ok) throw new Error("Failed to delete project");
+
+      const updated = { ...projectsData };
+      delete updated[`${repo.owner}/${repo.name}`];
+      setProjectsData(updated);
+    } catch (err) {
+      console.error("❌ Помилка видалення:", err);
+    }
   };
 
 
