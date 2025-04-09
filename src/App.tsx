@@ -92,9 +92,40 @@ const fetchRepo = async (path: string) => {
     window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(logoutUri)}`;
   };
 
-    const handleUpdate = () =>
-  {
+const handleUpdate = async (repo: RepoData) => {
+  try {
+    const response = await fetch(`https://api.github.com/repos/${repo.owner}/${repo.name}`);
+    const data = await response.json();
+
+    const updatedRepo: RepoData = {
+      owner: data.owner.login,
+      name: data.name,
+      url: data.html_url,
+      stars: data.stargazers_count,
+      forks: data.forks_count,
+      issues: data.open_issues_count,
+      createdAt: data.created_at,
     };
+
+    const updated = {
+      ...projectsData,
+      [`${repo.owner}/${repo.name}`]: updatedRepo,
+    };
+
+    setProjectsData(updated);
+
+    await fetch('http://localhost:3001/api/save-projects', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: ID_EMAIL,
+        projects: Object.values(updated),
+      }),
+    });
+  } catch (err) {
+    console.error("❌ Помилка оновлення репозиторію:", err);
+  }
+};
 
   const handleDelete = async (repo: RepoData) => {
     try {
