@@ -2,6 +2,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  max-width: 1200px;
+  width: 100%;
 }
 
 .breadcrumb {
@@ -13,10 +15,6 @@
 
 .breadcrumb-inactive {
   color: #64748b;
-}
-
-.breadcrumb-separator {
-  color: #36383a;
 }
 
 .breadcrumb-active {
