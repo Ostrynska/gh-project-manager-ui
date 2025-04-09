@@ -36,17 +36,18 @@
 .search-icon {
   position: absolute;
   top: 50%;
-  left: 12px;
+  right: 50px;
   width: 16px;
   height: 16px;
   transform: translateY(-50%);
   color: #000;
-  pointer-events: none;
+  pointer-events: none; 
+  z-index: 111;
 }
 
 .search-input {
   width: 100%;
-  padding: 8px 12px 8px 36px;
+  padding: 0 0 0 1px;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
   font-size: 14px;

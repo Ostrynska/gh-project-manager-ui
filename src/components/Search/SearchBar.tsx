@@ -1,5 +1,6 @@
 import { MdChevronRight } from "react-icons/md";
 import { toast } from 'react-toastify';
+import AutoCompleteInput from "./AutoCompleteInput";
 import "./SearchBar.css";
 
 interface SearchBarProps {
@@ -41,12 +42,11 @@ export const SearchBar: React.FC<SearchBarProps> = ({ input, setInput, onAdd }) 
               d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1010.5 18.5a7.5 7.5 0 006.15-3.85z"
             />
           </svg>
-          <input
+          <AutoCompleteInput
             className="search-input"
-            type="text"
             placeholder="Facebook/React"
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={setInput}
           />
         </div>
         <button className="button-31" onClick={handleClick}>
