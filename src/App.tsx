@@ -1,8 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth } from "react-oidc-context";
 import Loader from "./components/Loader";
 import Header from "./components/Header/Header";
 import "./App.css";
+
+type RepoData = {
+  owner: string;
+  name: string;
+  url: string;
+  stars: number;
+  forks: number;
+  issues: number;
+  createdAt: number;
+};
 import { SearchBar } from './components/Search/SearchBar';
 import ProjectsTable from './components/Projects/ProjectsTable';
 import WelcomePage from './pages/Welcome/Welcome';
@@ -107,8 +117,7 @@ const fetchRepo = async (path: string) => {
       <main className="flexbox-col">
         <section>
           <div className="container">
-            <SearchBar input={input} setInput={setInput}
-        onAdd={() => fetchRepo(input)}/></div>
+            <SearchBar input={input} setInput={setInput} onAdd={() => fetchRepo(input)}/></div>
         </section>
         <section>
           <div className="container">
@@ -116,7 +125,6 @@ const fetchRepo = async (path: string) => {
             <ProjectsTable projectsData={projectsData} handleUpdate={handleUpdate} handleDelete={handleDelete} />
           </div>
         </section>
-
       </main>
     </>
   );
