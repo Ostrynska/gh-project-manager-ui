@@ -1,7 +1,6 @@
 import { GrHomeRounded } from "react-icons/gr";
 import { RiUser2Fill } from "react-icons/ri";
 import { TbLogout } from "react-icons/tb";
-
 import './Header.css';
 
 interface HeaderProps {
@@ -9,17 +8,17 @@ interface HeaderProps {
   onClick: () => Promise<void>;
 }
 
-export default function Header({ user, onClick }: HeaderProps) {
+const Header: React.FC<HeaderProps> = ({ user, onClick }) => {
   return (
     <header>
       <nav id="navbar">
         <ul className="navbar-items flexbox-col">
           <li className="navbar-logo flexbox-left">
-            <a className="navbar-item-inner flexbox">
+            <a className="navbar-item-inner flexbox" href="#">
               <svg
                 fill="#000000"
-                width="800px"
-                height="800px"
+                width="24"
+                height="24"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -29,7 +28,7 @@ export default function Header({ user, onClick }: HeaderProps) {
           </li>
 
           <li className="navbar-item flexbox-left">
-            <a className="navbar-item-inner flexbox-left">
+            <a className="navbar-item-inner flexbox-left" href="#">
               <div className="navbar-item-inner-icon-wrapper flexbox">
                 <GrHomeRounded />
               </div>
@@ -40,24 +39,26 @@ export default function Header({ user, onClick }: HeaderProps) {
 
         <div className="navbar-end">
           <div className="navbar-item flexbox-left">
-            <a className="navbar-item-inner flexbox-left">
+            <div className="navbar-item-inner flexbox-left">
               <div className="navbar-item-inner-icon-wrapper flexbox">
                 <RiUser2Fill />
               </div>
               <span className="link-text">{user}</span>
-            </a>
+            </div>
           </div>
 
           <div className="navbar-item flexbox-left" onClick={onClick}>
-            <a className="navbar-item-inner flexbox-left">
+            <div className="navbar-item-inner flexbox-left" role="button">
               <div className="navbar-item-inner-icon-wrapper flexbox">
                 <TbLogout />
               </div>
               <span className="link-text">Sign out</span>
-            </a>
+            </div>
           </div>
         </div>
       </nav>
     </header>
   );
-}
+};
+
+export default Header;
